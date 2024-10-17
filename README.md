@@ -57,3 +57,11 @@ for file_path, table_name in files_to_load:
     df = spark.read.format("csv").option("header", "true").option("inferSchema", "true").load(file_path)
     df.write.mode("overwrite").saveAsTable(table_name)
 
+Setup validation: 
+
+You will pass this exercise when you achieved the following: 
+
+✅ You should now have twelve Lakehouse tables, with data in each of them. You can navigate to the SQL analytics endpoint of your Lakehouse to inspect the tables using T-SQL. If you have data in all of them, congratulations, you have completed this environment setup, and you can begin the Project in the next tutorial. 
+
+![image](https://github.com/user-attachments/assets/28ff7274-2839-4551-9e96-b86775ebc9b7)
+
