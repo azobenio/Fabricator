@@ -65,3 +65,44 @@ You will pass this exercise when you achieved the following:
 
 ![image](https://github.com/user-attachments/assets/28ff7274-2839-4551-9e96-b86775ebc9b7)
 
+## Business and data understanding
+
+We will be using these tables a lot over the next tutorials, so take some time to explore the different tables, try to understand the data, try to understand how they might fit together (or not!), think about how some of the tables might be connected, or need transformation/ cleaning. 
+
+Specifically, you should start thinking about: 
+Which of these tables could represent Facts, and which could represent Dimensions (we'll cover Facts and Dimensions in the following tutorials)?
+Which interesting business questions could you answer with the data? 
+To help you out, the data engineer left you this sketch to help you understand the data available. Not exactly a data dictionary, but better than nothin
+
+## Target architecture for this project
+
+For this project, you will be implementing a layered architecture. In fact, in the setup above, you have already built the first two 'layers' of your architecture, the Landing Zone and the Bronze layer in your Lakehouse. 
+At least initially (in this first set of tutorials), we will focus solely on building out the Green Layer (the one in the middle!). 
+
+We will define our cleaned/ conformed layer with the following properties: 
+- tables will be cleaned from the raw table to remove any erroneous data (and preferably validated, but we will not be validating our data in this module, we have a whole module on Data Quality validation coming up). 
+- where appropriate (given the business context, and potential downstream modelling use cases), data from separate sources systems will be combined into single datasets (i.e. conformed) 
+- our modelling at this stage will be generic enough to be used for a variety of downstream use cases, but we should have an idea of potential use cases for each table, and model them with these use cases in mind.
+- 
+I call this layer 'the middle'; when you begin to switch from a source-aligned mindset to a target-aligned mindset.
+
+Conformed layer (medallion) vs Conformed dimension (Kimball)
+
+Important terminology note: the Conformed Layer in a medallion architecture serves a different purpose to a Conformed Dimension, which you might be familiar with in Kimball dimensional modelling. 
+
+A dataset in the Conformed Layer of a medallion architecture combines multiple datasets that relate to the same thing (normally from different source systems), into a single dataset.
+
+For example, you could be storing data about Clients in a Client Management System and in your Project Management System. In a conformed layer, you could create a Clients dataset that brings together data from both systems. 
+
+A Conformed Dimension (in Kimball dimension modelling) is a dimension table that connects two fact tables together. 
+
+Why not just build your analytical models from your raw data? 
+
+You might be asking: "why do we need this layer? Can't I just build my analytics models on top of the Raw tables?". 
+
+You can do that, and it will be fine, up until a point. But as you build more and more analytical models, it's likely that a lot of them will repeat quite a lot of the business logic/ transformations, and sometimes repeat the business logic in slightly different ways, which can lead to different results/ numbers on the front-end, and angry stakeholders. 
+
+Plus, it makes it very difficult to maintain, dozens of analytical models all doing some form of transforming the raw datasets. 
+
+By building this generic layer of cleaned and conformed business data (you could call it Master Data), you are effectively creating a robust set of datasets that can be used as the foundation for multiple downstream analytical models.
+
